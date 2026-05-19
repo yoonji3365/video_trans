@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlInput = document.getElementById('youtube-url');
     const convertBtn = document.getElementById('convert-btn');
     const btnText = convertBtn.querySelector('.btn-text');
+    const loadingSpinner = document.getElementById('loading-spinner');
     const statusMessage = document.getElementById('status-message');
 
     const showMessage = (message, isError = false) => {
@@ -17,9 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = urlInput.value.trim();
         if (!url) return;
 
+        // URL Validation
+        const youtubeRegex = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/;
+        if (!youtubeRegex.test(url)) {
+            showMessage('올바른 유튜브 링크 형식이 아닙니다. (예: https://www.youtube.com/watch?v=...)', true);
+            return;
+        }
+
         // Basic UI state update
-        btnText.textContent = '변환 중...';
+        btnText.textContent = '다운로드 중...';
         convertBtn.disabled = true;
+        loadingSpinner.classList.remove('hidden');
         showMessage('서버에서 영상을 다운로드하고 변환 중입니다. (영상 길이에 따라 수 분이 소요될 수 있습니다)', false);
 
         try {
@@ -60,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             btnText.textContent = 'MP4로 다운로드';
             convertBtn.disabled = false;
+            loadingSpinner.classList.add('hidden');
         }
     });
 });
