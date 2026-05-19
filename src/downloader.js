@@ -50,7 +50,7 @@ const getSubtitlesText = async (url, tempId) => {
             skipDownload: true,
             writeAutoSubs: true,
             writeSubs: true,
-            subLangs: 'ko,en',
+            subLangs: 'ko,en,.*',
             subFormat: 'vtt',
             output: outTemplate,
             noWarnings: true
@@ -109,7 +109,7 @@ const downloadSubtitle = async (url, outPrefixPath) => {
             skipDownload: true,
             writeAutoSubs: true,
             writeSubs: true,
-            subLangs: 'ko,en',
+            subLangs: 'ko,en,.*',
             subFormat: 'vtt',
             output: outPrefixPath,
             noWarnings: true
