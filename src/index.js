@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const { downloadAudio } = require('./downloader');
+const { downloadVideo } = require('./downloader');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -26,11 +26,11 @@ app.post('/api/convert', async (req, res) => {
         fs.mkdirSync(downloadsDir, { recursive: true });
     }
 
-    const tempFilePath = path.join(downloadsDir, `audio-${Date.now()}.mp3`);
+    const tempFilePath = path.join(downloadsDir, `video-${Date.now()}.mp4`);
 
     try {
-        await downloadAudio(url, tempFilePath);
-        res.download(tempFilePath, 'audio.mp3', (err) => {
+        await downloadVideo(url, tempFilePath);
+        res.download(tempFilePath, 'video.mp4', (err) => {
             if (err) {
                 console.error('Download error:', err);
             }

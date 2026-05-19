@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = downloadUrl;
-            a.download = 'youtube-audio.mp3';
+            a.download = 'youtube-video.mp4';
             
             document.body.appendChild(a);
             a.click();
@@ -53,12 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
             window.URL.revokeObjectURL(downloadUrl);
             a.remove();
 
-            showMessage('성공적으로 변환되어 MP3 다운로드가 시작되었습니다! 🎉', false);
+            showMessage('성공적으로 변환되어 MP4 다운로드가 시작되었습니다! 🎉', false);
             urlInput.value = '';
         } catch (error) {
             showMessage(`오류: ${error.message}`, true);
         } finally {
-            btnText.textContent = 'MP3로 변환';
+            btnText.textContent = 'MP4로 다운로드';
             convertBtn.disabled = false;
         }
     });

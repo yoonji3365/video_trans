@@ -22,27 +22,27 @@ const getVideoInfo = async (url) => {
 };
 
 /**
- * Download a YouTube video's audio as MP3
+ * Download a YouTube video as MP4
  * @param {string} url - The YouTube video URL
- * @param {string} outputPath - The path where the MP3 will be saved
+ * @param {string} outputPath - The path where the video will be saved
  * @returns {Promise<void>}
  */
-const downloadAudio = async (url, outputPath) => {
+const downloadVideo = async (url, outputPath) => {
     try {
         await youtubedl(url, {
-            extractAudio: true,
-            audioFormat: 'mp3',
+            format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+            mergeOutputFormat: 'mp4',
             output: outputPath,
             ffmpegLocation: ffmpeg,
             noWarnings: true
         });
     } catch (error) {
-        console.error('Error downloading audio:', error);
+        console.error('Error downloading video:', error);
         throw error;
     }
 };
 
 module.exports = {
     getVideoInfo,
-    downloadAudio
+    downloadVideo
 };
