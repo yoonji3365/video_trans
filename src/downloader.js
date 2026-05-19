@@ -15,6 +15,27 @@ const findFileByPrefix = async (dir, prefix) => {
     }
 };
 
+const cleanSubtitleContent = (content) => {
+    const rawLines = content.split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(line => {
+            if (!line) return false;
+            if (line === 'WEBVTT') return false;
+            if (line.includes('-->')) return false;
+            if (line.startsWith('NOTE')) return false;
+            if (/^(Kind|Language):/i.test(line)) return false;
+            if (/^\d+$/.test(line)) return false;
+            if (line.includes('align:start')) return false;
+            return true;
+        })
+        .map(line => line.replace(/<[^>]*>/g, '').trim())
+        .filter(Boolean);
+
+    return rawLines
+        .filter((line, index, lines) => index === 0 || line !== lines[index - 1])
+        .join('\n');
+};
+
 /**
  * Get video information (metadata) from a YouTube URL
  * @param {string} url - The YouTube video URL
@@ -67,15 +88,7 @@ const getSubtitlesText = async (url, tempId) => {
             const content = await fs.readFile(subFile, 'utf8');
             await fs.unlink(subFile).catch(() => {}); // cleanup
             
-            // Basic VTT text cleanup (remove timestamps and duplicates for cleaner preview)
-            const rawLines = content.split('\n')
-                .filter(line => !line.includes('-->') && !line.startsWith('WEBVTT') && line.trim() !== '' && !line.includes('align:start'))
-                .map(line => line.replace(/<[^>]*>/g, '').trim()) // remove tags
-                .filter(line => line.length > 0);
-                
-            // Remove duplicates (fixes YouTube auto-generated roll-up captions)
-            const cleanText = [...new Set(rawLines)].join('\n');
-                
+            const cleanText = cleanSubtitleContent(content);
             return cleanText || '자막 내용이 비어있습니다.';
         }
         return '제공되는 자막이 없습니다.';
@@ -107,10 +120,10 @@ const downloadVideo = async (url, outputPath) => {
 };
 
 /**
- * Download a YouTube subtitle file
+ * Download a YouTube subtitle file as plain text
  * @param {string} url - The YouTube video URL
  * @param {string} outPrefixPath - The path prefix where the subtitle will be saved
- * @returns {Promise<string>} - Actual file path created
+ * @returns {Promise<string>} - Actual text file path created
  */
 const downloadSubtitle = async (url, outPrefixPath) => {
     try {
@@ -131,7 +144,19 @@ const downloadSubtitle = async (url, outPrefixPath) => {
         const dir = path.dirname(outPrefixPath);
         const prefix = path.basename(outPrefixPath);
         const file = await findFileByPrefix(dir, prefix);
-        if (file) return file;
+        if (file) {
+            const content = await fs.readFile(file, 'utf8');
+            const cleanText = cleanSubtitleContent(content);
+            await fs.unlink(file).catch(() => {});
+
+            if (!cleanText) {
+                throw new Error('자막 내용이 비어있습니다.');
+            }
+
+            const textFile = `${outPrefixPath}.txt`;
+            await fs.writeFile(textFile, cleanText, 'utf8');
+            return textFile;
+        }
         throw new Error('자막 파일을 찾을 수 없습니다.');
     } catch (error) {
         console.error('Error downloading subtitle:', error);

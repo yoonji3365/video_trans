@@ -26,7 +26,10 @@ app.post('/api/info', async (req, res) => {
         res.json({
             title: info.title,
             thumbnail: info.thumbnail,
-            subtitleText: subtitleText
+            subtitleText: subtitleText,
+            hasSubtitle: !subtitleText.startsWith('제공되는 자막이 없습니다')
+                && !subtitleText.startsWith('자막을 가져올 수 없습니다')
+                && !subtitleText.startsWith('자막 내용이 비어있습니다')
         });
     } catch (error) {
         console.error('Info Error:', error);
@@ -83,7 +86,7 @@ app.post('/api/convert/subtitle', async (req, res) => {
         if (!actualFile) {
             return res.status(404).json({ error: 'No subtitle found for this video' });
         }
-        res.download(actualFile, `youtube-subtitle${path.extname(actualFile)}`, (err) => {
+        res.download(actualFile, 'youtube-subtitle.txt', (err) => {
             if (err) {
                 console.error('Download error:', err);
             }

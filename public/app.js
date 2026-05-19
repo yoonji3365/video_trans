@@ -48,8 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentUrl = url;
         searchBtnText.textContent = '정보 불러오는 중...';
         searchBtn.disabled = true;
+        downloadSubtitleBtn.disabled = false;
         searchSpinner.classList.remove('hidden');
-        statusMessage.classList.add('hidden');
+        showMessage('영상 정보와 자막을 확인하는 중입니다.');
 
         try {
             const response = await fetch('/api/info', {
@@ -70,10 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
             videoTitle.title = data.title;
             videoThumbnail.src = data.thumbnail || '';
             subtitleBox.textContent = data.subtitleText || '자막 내용이 비어있습니다.';
+            downloadSubtitleBtn.disabled = !data.hasSubtitle;
             
             // Switch UI
             searchCard.classList.add('hidden');
             previewContainer.classList.remove('hidden');
+            showMessage(data.hasSubtitle ? '미리보기를 불러왔습니다.' : '미리보기는 불러왔지만 제공되는 자막이 없습니다.', !data.hasSubtitle);
 
         } catch (error) {
             showMessage(`오류: ${error.message}`, true);
@@ -92,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnTextElem.textContent = '다운로드 준비 중...';
         btn.disabled = true;
         spinner.classList.remove('hidden');
+        showMessage(type === 'video' ? '영상 다운로드를 준비하는 중입니다.' : '자막 TXT 파일을 준비하는 중입니다.');
 
         try {
             const response = await fetch(`/api/convert/${type}`, {
@@ -108,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const blob = await response.blob();
             
             // Get filename from Content-Disposition if possible
-            let filename = type === 'video' ? 'youtube-video.mp4' : 'youtube-subtitle.vtt';
+            let filename = type === 'video' ? 'youtube-video.mp4' : 'youtube-subtitle.txt';
             const disposition = response.headers.get('Content-Disposition');
             if (disposition && disposition.indexOf('attachment') !== -1) {
                 const matches = /filename="([^"]*)"/.exec(disposition);
@@ -128,10 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
             a.remove();
             
             btnTextElem.textContent = '다운로드 완료!';
+            showMessage(type === 'video' ? '영상 다운로드가 시작됐습니다.' : '자막 TXT 다운로드가 시작됐습니다.');
             setTimeout(() => { btnTextElem.textContent = originalText; }, 3000);
             
         } catch (error) {
-            alert(`다운로드 오류: ${error.message}`);
+            showMessage(`다운로드 오류: ${error.message}`, true);
             btnTextElem.textContent = originalText;
         } finally {
             btn.disabled = false;
@@ -153,6 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
     backBtn.addEventListener('click', () => {
         urlInput.value = '';
         currentUrl = '';
+        statusMessage.classList.add('hidden');
+        downloadSubtitleBtn.disabled = false;
         previewContainer.classList.add('hidden');
         searchCard.classList.remove('hidden');
     });
