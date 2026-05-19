@@ -40,12 +40,12 @@ const getVideoInfo = async (url) => {
  * @returns {Promise<string>} - Subtitle text content
  */
 const getSubtitlesText = async (url, tempId) => {
+    const outPrefix = `sub-${tempId}`;
+    const dir = path.join(__dirname, '../downloads');
+    await fs.mkdir(dir, { recursive: true });
+    const outTemplate = path.join(dir, outPrefix);
+    
     try {
-        const outPrefix = `sub-${tempId}`;
-        const dir = path.join(__dirname, '../downloads');
-        await fs.mkdir(dir, { recursive: true });
-        const outTemplate = path.join(dir, outPrefix);
-        
         await youtubedl(url, {
             skipDownload: true,
             writeAutoSubs: true,
@@ -55,7 +55,13 @@ const getSubtitlesText = async (url, tempId) => {
             output: outTemplate,
             noWarnings: true
         });
-        
+    } catch (error) {
+        // yt-dlp might exit with code 1 if some languages aren't found, but it still writes the available ones.
+        // We ignore the error and check if the file was created.
+        console.log('yt-dlp subtitle extraction threw an error, checking for partial success...');
+    }
+    
+    try {
         const subFile = await findFileByPrefix(dir, outPrefix);
         if (subFile) {
             const content = await fs.readFile(subFile, 'utf8');
@@ -71,7 +77,7 @@ const getSubtitlesText = async (url, tempId) => {
         }
         return '제공되는 자막이 없습니다.';
     } catch (error) {
-        console.error('Error fetching subtitles:', error);
+        console.error('Error reading subtitles:', error);
         return '자막을 가져올 수 없습니다.';
     }
 };
@@ -114,10 +120,16 @@ const downloadSubtitle = async (url, outPrefixPath) => {
             output: outPrefixPath,
             noWarnings: true
         });
-        
+    } catch (error) {
+        console.log('yt-dlp subtitle download threw an error, checking for partial success...');
+    }
+    
+    try {
         const dir = path.dirname(outPrefixPath);
         const prefix = path.basename(outPrefixPath);
-        return await findFileByPrefix(dir, prefix);
+        const file = await findFileByPrefix(dir, prefix);
+        if (file) return file;
+        throw new Error('자막 파일을 찾을 수 없습니다.');
     } catch (error) {
         console.error('Error downloading subtitle:', error);
         throw error;
