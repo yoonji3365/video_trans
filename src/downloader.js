@@ -18,6 +18,27 @@ const getVideoInfo = async (url) => {
     }
 };
 
+/**
+ * Download a YouTube video's audio as MP3
+ * @param {string} url - The YouTube video URL
+ * @param {string} outputPath - The path where the MP3 will be saved
+ * @returns {Promise<void>}
+ */
+const downloadAudio = async (url, outputPath) => {
+    try {
+        await youtubedl(url, {
+            extractAudio: true,
+            audioFormat: 'mp3',
+            output: outputPath,
+            noWarnings: true
+        });
+    } catch (error) {
+        console.error('Error downloading audio:', error);
+        throw error;
+    }
+};
+
 module.exports = {
-    getVideoInfo
+    getVideoInfo,
+    downloadAudio
 };
