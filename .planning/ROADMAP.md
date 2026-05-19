@@ -1,85 +1,60 @@
-# Roadmap: YouTube MP3 Converter
+# 로드맵: 유튜브 다운로더
 
-## Overview
+## 개요 (Overview)
 
-Building a YouTube to MP3 converter web application, starting from setting up the backend video processing pipeline, creating the frontend interface, and integrating them to enable smooth audio extraction and downloading.
+유튜브 링크를 기반으로 영상을 다운로드하고 자막을 추출하는 웹 애플리케이션을 구축합니다. 백엔드의 비디오 처리 파이프라인 구축부터 시작하여 프론트엔드 UI를 만들고, 이들을 통합하여 원활한 2-Step(미리보기 후 다운로드) 경험을 제공합니다.
 
-## Phases
+## 개발 단계 (Phases)
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+**단계 넘버링 규칙:**
+- 정수 단계 (1, 2, 3): 계획된 주요 마일스톤 작업
+- 소수점 단계 (2.1, 2.2): 긴급하게 삽입된 작업 (INSERTED 표시)
 
-- [ ] **Phase 1: Backend Setup & Audio Extraction** - Setup the server and implement YouTube video downloading and MP3 conversion.
-- [ ] **Phase 2: API & Frontend Foundation** - Create the API endpoint and build the basic frontend UI.
-- [ ] **Phase 3: Integration & Polish** - Connect frontend with backend, add error handling, loading states, and styling.
-- [ ] **Phase 4: Subtitle Extraction (자막 추출)** - 유튜브 영상의 자막(VTT/SRT)을 추출하여 다운로드하는 기능 추가.
+- [x] **Phase 1: 백엔드 셋업 및 추출 로직 구성** - 서버 인프라를 설정하고 유튜브 영상 다운로드 모듈을 구성합니다.
+- [x] **Phase 2: API 및 프론트엔드 뼈대 구축** - API 엔드포인트를 열고 글래스모피즘 기반의 모던한 UI를 구축합니다.
+- [x] **Phase 3: 통합 및 폴리싱 (완성도 향상)** - 프론트엔드와 백엔드를 연동하고, 로딩 스피너 및 에러 검증 로직을 고도화합니다.
+- [x] **Phase 4: 자막 추출 및 2-Step 대시보드 (혁신적 UI)** - 썸네일과 자막 텍스트를 미리 보여주고, 영상과 자막을 개별 다운로드할 수 있는 혁신적인 UI를 구축합니다.
 
-## Phase Details
+## 단계별 세부 계획 (Phase Details)
 
-### Phase 1: Backend Setup & Audio Extraction
-**Goal**: Set up a backend service capable of downloading a YouTube video and converting its audio to an MP3 file.
-**Depends on**: Nothing
-**Requirements**: [Accept valid YouTube URLs as input, Extract audio from the provided YouTube video, Convert the extracted audio to MP3 format]
-**Success Criteria** (what must be TRUE):
-  1. Server can accept a YouTube URL and internally process it.
-  2. The downloaded video's audio is extracted and saved as an MP3 file.
-  3. The service handles basic errors like invalid URLs.
-**Plans**: 3 plans
+### Phase 1: 백엔드 셋업 및 추출 로직 구성
+**목표**: 유튜브 영상을 다운로드할 수 있는 백엔드 서비스를 구축합니다.
+**선행 작업**: 없음
+**성공 기준**:
+  1. 서버가 유튜브 URL을 받아 정상적으로 내부 처리를 수행할 수 있다.
+  2. 다운로드된 영상이 서버에 정상적으로 저장된다.
+  3. 잘못된 URL 등 기본적인 에러를 처리한다.
 
-Plans:
-- [ ] 01-01: Initialize backend project (e.g., Node.js + Express or Python + FastAPI).
-- [ ] 01-02: Integrate a library like yt-dlp to fetch the video and extract audio.
-- [ ] 01-03: Implement the conversion logic to save the output as an MP3 file.
+### Phase 2: API 및 프론트엔드 뼈대 구축
+**목표**: 백엔드 기능을 API로 노출시키고 기본 웹 인터페이스를 구축합니다.
+**선행 작업**: Phase 1
+**성공 기준**:
+  1. API 엔드포인트가 다운로드 링크를 제공할 수 있다.
+  2. 프론트엔드에 입력 폼과 변환 버튼이 있는 모던한 디자인이 적용되어 있다.
 
-### Phase 2: API & Frontend Foundation
-**Goal**: Expose the backend functionality via an API and build the basic web interface.
-**Depends on**: Phase 1
-**Requirements**: [User interface with an input field and conversion button, Provide a download link for the MP3 file]
-**Success Criteria** (what must be TRUE):
-  1. The API endpoint receives the URL and returns a downloadable MP3 link.
-  2. The frontend has a clean UI with an input field and a "Convert" button.
-**Plans**: 2 plans
+### Phase 3: 통합 및 폴리싱 (완성도 향상)
+**목표**: 프론트엔드와 백엔드를 연동하고 에러 핸들링 및 UI 디테일을 다듬습니다.
+**선행 작업**: Phase 2
+**성공 기준**:
+  1. 링크를 붙여넣고 버튼을 누르면 다운로드가 시작되고 로딩 스피너가 표시된다.
+  2. 모바일 반응형 디자인이 완벽히 작동한다.
+  3. 변환 실패나 엉뚱한 텍스트 입력 시 경고 메시지가 즉시 나타난다.
 
-Plans:
-- [ ] 02-01: Create API endpoint to trigger conversion and serve the MP3 file.
-- [ ] 02-02: Create basic HTML/CSS/JS frontend to interact with the API.
+### Phase 4: 자막 추출 및 2-Step 대시보드 (혁신적 UI)
+**목표**: 영상을 맹목적으로 받기 전에 썸네일과 자막 내용을 화면에서 읽고, 원하는 항목만 선택하여 다운로드할 수 있는 고급 기능을 추가합니다.
+**선행 작업**: Phase 3
+**성공 기준**:
+  1. 백엔드에서 영상을 다운로드하지 않고도 썸네일과 자막 텍스트만 1초 안에 파싱하여 응답한다.
+  2. 사용자가 대시보드에서 미리보기를 확인한 뒤 [영상 다운로드], [자막 다운로드]를 각각 수행할 수 있다.
 
-### Phase 3: Integration & Polish
-**Goal**: Connect the frontend and backend, adding robust error handling and UI polish.
-**Depends on**: Phase 2
-**Requirements**: [Error handling for invalid URLs or failed conversions]
-**Success Criteria** (what must be TRUE):
-  1. User can paste a link, click convert, see a loading state, and download the MP3.
-  2. The interface looks professional and is mobile-responsive.
-  3. Clear error messages are shown if the link is invalid or conversion fails.
-**Plans**: 2 plans
+## 진행 상황 (Progress)
 
-Plans:
-- [ ] 03-01: Implement loading states and error handling on the frontend.
-- [ ] 03-02: Polish the UI/UX with CSS (responsive design, modern aesthetics).
+**실행 순서:**
+각 단계는 숫자 순서대로 실행됩니다: 1 → 2 → 3 → 4
 
-### Phase 4: Subtitle Extraction (자막 추출)
-**Goal**: 영상 다운로드 시 해당 영상에 포함된 자막 파일도 함께 또는 별도로 추출할 수 있는 기능 추가.
-**Depends on**: Phase 3
-**Requirements**: [유튜브 영상의 자막을 다운로드 할 수 있는 백엔드 기능, 프론트엔드에 자막 다운로드 옵션 UI 추가]
-**Success Criteria** (what must be TRUE):
-  1. 백엔드에서 영상의 자막을 추출하여 파일로 생성할 수 있다.
-  2. 사용자가 프론트엔드에서 자막 포함 여부를 선택하거나 별도 다운로드 할 수 있다.
-**Plans**: 2 plans
-
-Plans:
-- [ ] 04-01: 백엔드 자막 추출 로직 및 API 구현
-- [ ] 04-02: 프론트엔드 자막 다운로드 버튼/옵션 UI 추가
-
-## Progress
-
-**Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3
-
-| Phase | Plans Complete | Status | Completed |
+| 단계 (Phase) | 계획 완료 개수 | 상태 (Status) | 완료 여부 |
 |-------|----------------|--------|-----------|
-| 1. Backend Setup & Audio Extraction | 3/3 | Completed | - |
-| 2. API & Frontend Foundation | 2/2 | Completed | - |
-| 3. Integration & Polish | 2/2 | Completed | - |
-| 4. Subtitle Extraction | 0/2 | Not started | - |
+| 1. 백엔드 셋업 및 추출 로직 구성 | 3/3 | 완료됨 (Completed) | O |
+| 2. API 및 프론트엔드 뼈대 구축 | 2/2 | 완료됨 (Completed) | O |
+| 3. 통합 및 폴리싱 | 2/2 | 완료됨 (Completed) | O |
+| 4. 자막 추출 및 2-Step 대시보드 | 2/2 | 완료됨 (Completed) | O |

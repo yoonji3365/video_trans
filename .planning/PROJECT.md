@@ -1,66 +1,52 @@
-# YouTube MP3 Converter
+# 유튜브 다운로더 (YouTube Downloader)
 
-## What This Is
+## 소개 (What This Is)
 
-A web application that allows users to input a YouTube video link and downloads the corresponding video (MP4) and its subtitles.
+사용자가 유튜브 영상 링크를 입력하면 영상의 썸네일과 자막 텍스트를 미리 보여주고, 원하는 대로 원본 영상(MP4)과 자막 파일(VTT/SRT)을 각각 다운로드할 수 있도록 지원하는 웹 애플리케이션입니다.
 
-## Core Value
+## 핵심 가치 (Core Value)
 
-Fast, simple, and reliable downloading of YouTube videos (MP4) and subtitles with a single click.
+버튼 클릭 한 번으로 빠르고 간편하게 유튜브 영상과 자막을 미리 확인하고 신뢰성 있게 다운로드할 수 있는 직관적인 사용자 경험.
 
-## Requirements
+## 요구 사항 (Requirements)
 
-### Validated
+### 검증됨 (Validated)
 
-(None yet — ship to validate)
+(현재까지 배포하여 검증할 항목 없음)
 
-### Active
+### 활성화됨 (Active)
 
-- [ ] Accept valid YouTube URLs as input
-- [ ] Download video in MP4 format
-- [ ] Extract and download subtitles (if requested)
-- [ ] Provide a download link for the extracted files
-- [ ] User interface with an input field and conversion button
-- [ ] Error handling for invalid URLs or failed downloads
+- [x] 올바른 유튜브 URL을 입력받을 수 있어야 함
+- [x] MP4 포맷으로 영상을 다운로드 할 수 있어야 함
+- [x] 유튜브의 자동 생성 및 공식 자막을 추출하여 텍스트로 보여주고 파일로 다운로드할 수 있어야 함
+- [x] 추출된 파일들에 대한 다이렉트 다운로드 링크를 제공해야 함
+- [x] 정보 불러오기 폼과 변환/다운로드 버튼을 포함한 세련된 사용자 인터페이스 제공
+- [x] 유효하지 않은 URL이나 다운로드 실패 시 직관적인 에러 처리 제공
+- [x] 썸네일 및 자막 내용을 텍스트로 미리 읽을 수 있는 2-Step 미리보기 대시보드 구현
 
-### Out of Scope
+### 범위 외 (Out of Scope)
 
-- [ ] Audio-only extraction (MP3) - The objective changed to video and subtitle downloads.
-- [ ] Batch downloading - Focus on single links first to ensure stability.
+- [ ] 오디오 전용(MP3) 추출 - 프로젝트 목표가 영상 및 자막 다운로드로 변경됨.
+- [ ] 일괄 다운로드(Batch downloading) - 서비스의 안정성을 위해 단일 링크 처리에 우선 집중.
 
-## Context
+## 문맥 (Context)
 
-- Building a simple utility site.
-- Needs to handle YouTube API or yt-dlp to fetch the video and extract the audio.
-- Frontend should be clean, mobile-responsive, and intuitive.
+- 깔끔하고 사용하기 쉬운 유틸리티 사이트를 구축합니다.
+- `yt-dlp` 도구를 백엔드에 통합하여 영상 및 자막 데이터를 파싱하고 추출합니다.
+- 프론트엔드는 글래스모피즘 기반의 모던한 테마로 모바일 반응형 및 직관성을 갖춰야 합니다.
 
-## Constraints
+## 제약 조건 (Constraints)
 
-- **Tech Stack**: Frontend (HTML/CSS/JS or framework), Backend (Node.js/Python for handling the download/conversion) — Need a backend to process the video since CORS and processing power would restrict doing this purely on the client side.
-- **Compatibility**: Must work on modern browsers (mobile and desktop).
+- **기술 스택 (Tech Stack)**: 프론트엔드(바닐라 HTML/CSS/JS), 백엔드(Node.js + Express) — CORS 정책 및 파일 처리 연산 부하를 피하기 위해 반드시 백엔드 서버에서 다운로드 작업을 처리해야 함.
+- **호환성 (Compatibility)**: 모던 웹 브라우저(모바일 및 데스크탑)에서 완벽히 작동해야 함.
 
-## Key Decisions
+## 주요 결정 사항 (Key Decisions)
 
-| Decision | Rationale | Outcome |
+| 결정 사항 | 이유 | 결과 |
 |----------|-----------|---------|
-| Use a backend server for conversion | Pure frontend conversion is limited by CORS and processing power | — Pending |
+| 변환을 위한 백엔드 서버 사용 | 순수 프론트엔드에서의 변환은 CORS와 처리 능력의 한계가 있음 | 서버 인프라 구축됨 |
+| 파이썬(Python) 의존성 제거 | `yt-dlp` 모듈의 파이썬 버전 충돌 오류를 방지하기 위해 Mac 전용 단독 실행파일(Standalone Binary) 적용 | 안정적인 다운로드 가능 |
+| 2-Step 미리보기 UI 도입 | 맹목적인 일괄 다운로드가 아닌, 자막 내용과 썸네일을 먼저 확인하고 개별 다운로드할 수 있게 하여 기존 사이트들과 차별화된 UX 제공 | 성공적으로 도입됨 |
 
 ---
-*Last updated: 2026-05-19 after initialization*
-
-## Evolution
-
-This document evolves at phase transitions and milestone boundaries.
-
-**After each phase transition** (via `/gsd-transition`):
-1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
-3. New requirements emerged? → Add to Active
-4. Decisions to log? → Add to Key Decisions
-5. "What This Is" still accurate? → Update if drifted
-
-**After each milestone** (via `/gsd-complete-milestone`):
-1. Full review of all sections
-2. Core Value check — still the right priority?
-3. Audit Out of Scope — reasons still valid?
-4. Update Context with current state
+*마지막 업데이트: 2026-05-19*

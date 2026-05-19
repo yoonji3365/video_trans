@@ -1,6 +1,6 @@
-## Project Reference
+## 프로젝트 참조 (Project Reference)
 
-See: .planning/PROJECT.md (updated 2026-05-19)
+참조 파일: .planning/PROJECT.md (최근 업데이트: 2026-05-19)
 
-**Core value:** Fast, simple, and reliable conversion of YouTube videos to high-quality MP3 files with a single click.
-**Current focus:** Initialization complete. Ready to plan Phase 1.
+**핵심 가치 (Core value):** 버튼 클릭 한 번으로 빠르고 간편하게 유튜브 영상(MP4)과 자막을 미리 확인하고 신뢰성 있게 다운로드할 수 있는 직관적인 서비스.
+**현재 초점 (Current focus):** Phase 4 (자막 추출 및 미리보기 대시보드) 개발 및 통합 완료. 모든 기능 정상 동작 중.
