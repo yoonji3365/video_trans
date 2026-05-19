@@ -1,0 +1,65 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('convert-form');
+    const urlInput = document.getElementById('youtube-url');
+    const convertBtn = document.getElementById('convert-btn');
+    const btnText = convertBtn.querySelector('.btn-text');
+    const statusMessage = document.getElementById('status-message');
+
+    const showMessage = (message, isError = false) => {
+        statusMessage.textContent = message;
+        statusMessage.className = `status-message ${isError ? 'status-error' : 'status-info'}`;
+        statusMessage.classList.remove('hidden');
+    };
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const url = urlInput.value.trim();
+        if (!url) return;
+
+        // Basic UI state update
+        btnText.textContent = '변환 중...';
+        convertBtn.disabled = true;
+        showMessage('서버에서 영상을 다운로드하고 변환 중입니다. (영상 길이에 따라 수 분이 소요될 수 있습니다)', false);
+
+        try {
+            const response = await fetch('/api/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || '변환에 실패했습니다.');
+            }
+
+            // Get the file blob
+            const blob = await response.blob();
+            
+            // Create a temporary link to download the blob
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = downloadUrl;
+            a.download = 'youtube-audio.mp3';
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            // Cleanup
+            window.URL.revokeObjectURL(downloadUrl);
+            a.remove();
+
+            showMessage('성공적으로 변환되어 MP3 다운로드가 시작되었습니다! 🎉', false);
+            urlInput.value = '';
+        } catch (error) {
+            showMessage(`오류: ${error.message}`, true);
+        } finally {
+            btnText.textContent = 'MP3로 변환';
+            convertBtn.disabled = false;
+        }
+    });
+});
