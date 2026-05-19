@@ -13,6 +13,7 @@ Building a YouTube to MP3 converter web application, starting from setting up th
 - [ ] **Phase 1: Backend Setup & Audio Extraction** - Setup the server and implement YouTube video downloading and MP3 conversion.
 - [ ] **Phase 2: API & Frontend Foundation** - Create the API endpoint and build the basic frontend UI.
 - [ ] **Phase 3: Integration & Polish** - Connect frontend with backend, add error handling, loading states, and styling.
+- [ ] **Phase 4: Subtitle Extraction (자막 추출)** - 유튜브 영상의 자막(VTT/SRT)을 추출하여 다운로드하는 기능 추가.
 
 ## Phase Details
 
@@ -58,6 +59,19 @@ Plans:
 - [ ] 03-01: Implement loading states and error handling on the frontend.
 - [ ] 03-02: Polish the UI/UX with CSS (responsive design, modern aesthetics).
 
+### Phase 4: Subtitle Extraction (자막 추출)
+**Goal**: 영상 다운로드 시 해당 영상에 포함된 자막 파일도 함께 또는 별도로 추출할 수 있는 기능 추가.
+**Depends on**: Phase 3
+**Requirements**: [유튜브 영상의 자막을 다운로드 할 수 있는 백엔드 기능, 프론트엔드에 자막 다운로드 옵션 UI 추가]
+**Success Criteria** (what must be TRUE):
+  1. 백엔드에서 영상의 자막을 추출하여 파일로 생성할 수 있다.
+  2. 사용자가 프론트엔드에서 자막 포함 여부를 선택하거나 별도 다운로드 할 수 있다.
+**Plans**: 2 plans
+
+Plans:
+- [ ] 04-01: 백엔드 자막 추출 로직 및 API 구현
+- [ ] 04-02: 프론트엔드 자막 다운로드 버튼/옵션 UI 추가
+
 ## Progress
 
 **Execution Order:**
@@ -65,6 +79,7 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Backend Setup & Audio Extraction | 0/3 | Not started | - |
-| 2. API & Frontend Foundation | 0/2 | Not started | - |
-| 3. Integration & Polish | 0/2 | Not started | - |
+| 1. Backend Setup & Audio Extraction | 3/3 | Completed | - |
+| 2. API & Frontend Foundation | 2/2 | Completed | - |
+| 3. Integration & Polish | 2/2 | Completed | - |
+| 4. Subtitle Extraction | 0/2 | Not started | - |

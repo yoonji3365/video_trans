@@ -2,11 +2,11 @@
 
 ## What This Is
 
-A web application that allows users to input a YouTube video link and converts the corresponding video into an MP3 audio file for download.
+A web application that allows users to input a YouTube video link and downloads the corresponding video (MP4) and its subtitles.
 
 ## Core Value
 
-Fast, simple, and reliable conversion of YouTube videos to high-quality MP3 files with a single click.
+Fast, simple, and reliable downloading of YouTube videos (MP4) and subtitles with a single click.
 
 ## Requirements
 
@@ -17,15 +17,15 @@ Fast, simple, and reliable conversion of YouTube videos to high-quality MP3 file
 ### Active
 
 - [ ] Accept valid YouTube URLs as input
-- [ ] Extract audio from the provided YouTube video
-- [ ] Convert the extracted audio to MP3 format
-- [ ] Provide a download link for the MP3 file
+- [ ] Download video in MP4 format
+- [ ] Extract and download subtitles (if requested)
+- [ ] Provide a download link for the extracted files
 - [ ] User interface with an input field and conversion button
-- [ ] Error handling for invalid URLs or failed conversions
+- [ ] Error handling for invalid URLs or failed downloads
 
 ### Out of Scope
 
-- [ ] Video format conversion (MP4, etc.) - Only MP3 is required.
+- [ ] Audio-only extraction (MP3) - The objective changed to video and subtitle downloads.
 - [ ] Batch downloading - Focus on single links first to ensure stability.
 
 ## Context
