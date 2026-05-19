@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube to MP4 Converter</title>
-    <meta name="description" content="Fast, simple, and reliable conversion of YouTube videos to high-quality MP4 files with a single click.">
+    <title>YouTube to MP4 & Subtitles</title>
+    <meta name="description" content="Search YouTube videos to preview thumbnails and subtitles before downloading.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -15,24 +15,61 @@
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
     </div>
+    
     <main class="container">
-        <div class="glass-card">
+        <!-- Search Card -->
+        <div class="glass-card" id="search-card">
             <div class="header">
-                <h1>YouTube <span class="gradient-text">MP4</span></h1>
-                <p>유튜브 링크를 입력하면 빠르고 간편하게 고화질 MP4 파일로 변환해 드립니다.</p>
+                <h1>YouTube <span class="gradient-text">Downloader</span></h1>
+                <p>유튜브 링크를 입력하여 썸네일과 자막을 미리 확인하세요.</p>
             </div>
-            <form id="convert-form" class="convert-form">
+            <form id="search-form" class="convert-form">
                 <div class="input-group">
                     <input type="url" id="youtube-url" placeholder="https://www.youtube.com/watch?v=..." required autocomplete="off">
                 </div>
-                <button type="submit" id="convert-btn">
-                    <div id="loading-spinner" class="spinner hidden"></div>
-                    <span class="btn-text">MP4로 다운로드</span>
+                <button type="submit" id="search-btn">
+                    <div id="search-spinner" class="spinner hidden"></div>
+                    <span class="btn-text" id="search-btn-text">정보 불러오기</span>
                 </button>
             </form>
-            <div id="status-message" class="status-message hidden">
-                <!-- Status messages will be injected here -->
+            <div id="status-message" class="status-message hidden"></div>
+        </div>
+
+        <!-- Preview & Download Section -->
+        <div class="glass-card preview-container hidden" id="preview-container">
+            <div class="preview-layout">
+                <!-- Video Panel -->
+                <div class="preview-panel">
+                    <div class="panel-header">
+                        <h3>영상 미리보기</h3>
+                        <p class="truncate" id="video-title">제목을 불러오는 중...</p>
+                    </div>
+                    <div class="thumbnail-wrapper">
+                        <img id="video-thumbnail" src="" alt="YouTube Thumbnail">
+                    </div>
+                    <button id="download-video-btn" class="download-btn primary-btn">
+                        <div id="video-spinner" class="spinner hidden"></div>
+                        <span class="btn-text">영상 다운받기 (MP4)</span>
+                    </button>
+                </div>
+
+                <!-- Subtitle Panel -->
+                <div class="preview-panel">
+                    <div class="panel-header">
+                        <h3>자막 미리보기</h3>
+                        <p>텍스트로 내용 확인하기</p>
+                    </div>
+                    <div class="subtitle-box" id="subtitle-box">
+                        자막 내용이 여기에 표시됩니다.
+                    </div>
+                    <button id="download-subtitle-btn" class="download-btn secondary-btn">
+                        <div id="subtitle-spinner" class="spinner hidden"></div>
+                        <span class="btn-text">자막 다운받기 (VTT)</span>
+                    </button>
+                </div>
             </div>
+            
+            <button id="back-btn" class="back-btn">다시 검색하기</button>
         </div>
     </main>
     <script src="app.js"></script>
