@@ -67,11 +67,14 @@ const getSubtitlesText = async (url, tempId) => {
             const content = await fs.readFile(subFile, 'utf8');
             await fs.unlink(subFile).catch(() => {}); // cleanup
             
-            // Basic VTT text cleanup (remove timestamps for cleaner preview)
-            const cleanText = content.split('\n')
+            // Basic VTT text cleanup (remove timestamps and duplicates for cleaner preview)
+            const rawLines = content.split('\n')
                 .filter(line => !line.includes('-->') && !line.startsWith('WEBVTT') && line.trim() !== '' && !line.includes('align:start'))
-                .join('\n')
-                .replace(/<[^>]*>/g, ''); // remove tags
+                .map(line => line.replace(/<[^>]*>/g, '').trim()) // remove tags
+                .filter(line => line.length > 0);
+                
+            // Remove duplicates (fixes YouTube auto-generated roll-up captions)
+            const cleanText = [...new Set(rawLines)].join('\n');
                 
             return cleanText || '자막 내용이 비어있습니다.';
         }
