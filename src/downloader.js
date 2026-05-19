@@ -1,4 +1,7 @@
-const youtubedl = require('youtube-dl-exec');
+const { create } = require('youtube-dl-exec');
+const path = require('path');
+const youtubedl = create(path.join(__dirname, '../yt-dlp'));
+const ffmpeg = require('ffmpeg-static');
 
 /**
  * Get video information (metadata) from a YouTube URL
@@ -30,6 +33,7 @@ const downloadAudio = async (url, outputPath) => {
             extractAudio: true,
             audioFormat: 'mp3',
             output: outputPath,
+            ffmpegLocation: ffmpeg,
             noWarnings: true
         });
     } catch (error) {
